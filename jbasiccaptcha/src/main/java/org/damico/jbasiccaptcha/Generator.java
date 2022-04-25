@@ -49,9 +49,9 @@ public class Generator {
 	private byte[] byteArray = null;
 	private String otp = null;
 	private String otpL = null;
-	private String[] lettersA = {"a", "B", "c", "D", "e", "F", "g", "I", "j", "K"};
-	private String[] lettersB = {"L", "m", "N", "o", "P", "q", "R", "s", "T", "u"};
-	private String[] lettersC = {"v", "W", "x", "Y", "z", "A", "C", "E", "G", "J"};
+	private String[] lettersA = {"a", "B", "c", "D", "e", "F", "g", "H", "d", "K"};
+	private String[] lettersB = {"L", "m", "N", "p", "P", "q", "R", "s", "T", "u"};
+	private String[] lettersC = {"v", "W", "x", "Y", "z", "A", "C", "E", "G", "Z"};
 
 	public Generator(byte[] seed) throws InvalidKeyException, UndeclaredThrowableException, NoSuchAlgorithmException, IOException {
 		this.seed = seed;

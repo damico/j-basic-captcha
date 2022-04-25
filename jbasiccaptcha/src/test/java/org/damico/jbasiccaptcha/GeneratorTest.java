@@ -47,7 +47,9 @@ public class GeneratorTest{
     @Test
     public void testGenerator(){
 			String otpPre = generatorA.getOtp();
+			System.out.println(generatorA.getOtpL());
 			String otpPos = generatorB.getOtp();
+			System.out.println(otpPos);
 			assertEquals(otpPre, otpPos);
 			
     }
