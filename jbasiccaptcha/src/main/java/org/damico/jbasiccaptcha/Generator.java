@@ -53,15 +53,15 @@ public class Generator {
 	private String[] lettersB = {"L", "m", "N", "p", "P", "q", "R", "s", "T", "u"};
 	private String[] lettersC = {"v", "W", "x", "Y", "z", "A", "C", "E", "G", "Z"};
 
-	public Generator(byte[] seed) throws InvalidKeyException, UndeclaredThrowableException, NoSuchAlgorithmException, IOException {
+	public Generator(byte[] seed, Boolean isBasic) throws InvalidKeyException, UndeclaredThrowableException, NoSuchAlgorithmException, IOException {
 		this.seed = seed;
-		BufferedImage img = genOtpImage(seed);
+		BufferedImage img = genOtpImage(seed, isBasic);
 		setByteArray(img);
 	}
 
-	public Generator(byte[] seed, File file) throws InvalidKeyException, UndeclaredThrowableException, NoSuchAlgorithmException, IOException {
+	public Generator(byte[] seed, File file, Boolean isBasic) throws InvalidKeyException, UndeclaredThrowableException, NoSuchAlgorithmException, IOException {
 		this.seed = seed;
-		BufferedImage img = genOtpImage(seed);
+		BufferedImage img = genOtpImage(seed, isBasic);
 		setByteArray(img);
 		savePNG( img, file);
 	}
@@ -123,10 +123,10 @@ public class Generator {
 
 
 
-	private BufferedImage genOtpImage(byte[] seed) throws InvalidKeyException, NoSuchAlgorithmException {
+	private BufferedImage genOtpImage(byte[] seed, Boolean isBasic) throws InvalidKeyException, NoSuchAlgorithmException {
 
 		String otp = genOtp(seed);
-		BufferedImage img = genBufferedImg(otp);
+		BufferedImage img = genBufferedImg(otp, isBasic);
 		return img;
 	}
 
@@ -144,7 +144,7 @@ public class Generator {
 		return otp;
 	}
 
-	private BufferedImage genBufferedImg(String otp) {
+	private BufferedImage genBufferedImg(String otp, Boolean isBasic) {
 
 
 
@@ -174,19 +174,19 @@ public class Generator {
 
 
 
-		BufferedImage img = map( 130, 40 );
+		BufferedImage img = map( 135, 45, isBasic );
 		Graphics2D g2d = img.createGraphics();
 		Font f = new Font(getRandomLogicalFont(), getRandomFontStyle(), getRandomFromMinMax(24, 28));
 		g2d.setFont(f);
-		g2d.setColor(getRandomFontColor());
+		g2d.setColor(getRandomFontColor(isBasic));
 		g2d.drawString(partA, 5, getRandomFromMinMax(20,40));
 		f = new Font(getRandomLogicalFont(), getRandomFontStyle(), getRandomFromMinMax(24, 28));
 		g2d.setFont(f);
-		g2d.setColor(getRandomFontColor());
+		g2d.setColor(getRandomFontColor(isBasic));
 		g2d.drawString(partB, 45, getRandomFromMinMax(20,40));
 		f = new Font(getRandomLogicalFont(), getRandomFontStyle(), getRandomFromMinMax(24, 28));
 		g2d.setFont(f);
-		g2d.setColor(getRandomFontColor());
+		g2d.setColor(getRandomFontColor(isBasic));
 		g2d.drawString(partC, 85, getRandomFromMinMax(20,40));
 		return img;
 
@@ -194,18 +194,22 @@ public class Generator {
 
 
 
-	public Color getRandomFontColor() {
+	public Color getRandomFontColor(Boolean isBasic) {
 		Random r = new Random();
 
-		Color[] fontColors = {Color.BLACK, Color.BLUE, Color.ORANGE, Color.YELLOW, Color.RED, Color.GREEN};
+		Color[] fontColors = new Color[]{Color.BLACK, Color.BLUE, Color.ORANGE, Color.YELLOW, Color.RED, Color.GREEN};
+		if(isBasic) fontColors = new Color[]{Color.WHITE, Color.LIGHT_GRAY};
 		int sorted = r.nextInt(fontColors.length);
 		return fontColors[sorted];
 	}
 
-	public Color getRandomBgColor() {
+	public Color getRandomBgColor(Boolean isBasic) {
 		Random r = new Random();
 
-		Color[] fontColors = {Color.GRAY, Color.DARK_GRAY, Color.LIGHT_GRAY, Color.WHITE, Color.MAGENTA, Color.CYAN};
+	
+		Color[] fontColors = new Color[]{Color.GRAY, Color.DARK_GRAY, Color.LIGHT_GRAY, Color.WHITE, Color.MAGENTA, Color.CYAN};
+		if(isBasic) fontColors = new Color[]{Color.BLACK, Color.DARK_GRAY};
+		
 		int sorted = r.nextInt(fontColors.length);
 		return fontColors[sorted];
 	}
@@ -236,12 +240,12 @@ public class Generator {
 
 	}
 
-	private BufferedImage map( int sizeX, int sizeY ){
+	private BufferedImage map( int sizeX, int sizeY, Boolean isBasic ){
 		final BufferedImage res = new BufferedImage( sizeX, sizeY, BufferedImage.TYPE_INT_RGB );
 		for (int x = 0; x < sizeX; x++){
 			for (int y = 0; y < sizeY; y++){
-				if(x % 2 == 0) res.setRGB(x, y, getRandomBgColor().getRGB() );
-				if(y % 2 == 0) res.setRGB(x, y, getRandomBgColor().getRGB() );
+				if(x % 2 == 0) res.setRGB(x, y, getRandomBgColor(isBasic).getRGB() );
+				if(y % 2 == 0) res.setRGB(x, y, getRandomBgColor(isBasic).getRGB() );
 			}
 		}
 		return res;

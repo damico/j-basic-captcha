@@ -36,7 +36,7 @@ public class GeneratorTest{
 	public void setUp() {
 		
 		try {
-			generatorA = new Generator(seed, new File("/tmp/captcha.png"));
+			generatorA = new Generator(seed, new File("/tmp/captcha.png"), true);
 			generatorB = new Generator(seed, generatorA.getOtpL());
 		} catch (Exception e) {
 			e.printStackTrace();
