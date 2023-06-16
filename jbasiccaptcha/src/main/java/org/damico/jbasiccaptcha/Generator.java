@@ -52,6 +52,10 @@ public class Generator {
 	private String[] lettersA = {"a", "B", "c", "D", "e", "F", "g", "H", "d", "K"};
 	private String[] lettersB = {"L", "m", "N", "p", "P", "q", "R", "s", "T", "u"};
 	private String[] lettersC = {"v", "W", "x", "Y", "z", "A", "C", "E", "G", "Z"};
+	
+	private String[] lettersAb = {"A", "B", "C", "D", "E", "F", "G", "H", "Z", "@"};
+	private String[] lettersBb = {"L", "M", "N", "P", "Q", "R", "S", "T", "I", "%"};
+	private String[] lettersCb = {"X", "W", "Z", "Y", "K", "V", "U", "J", "=", "&"};
 
 	public Generator(byte[] seed, Boolean isBasic) throws InvalidKeyException, UndeclaredThrowableException, NoSuchAlgorithmException, IOException {
 		this.seed = seed;
@@ -66,10 +70,19 @@ public class Generator {
 		savePNG( img, file);
 	}
 
-	public Generator(byte[] seed, String typedOtp) throws Exception  {
+	public Generator(byte[] seed, String typedOtp, Boolean isBasic) throws Exception  {
 
 		this.seed = seed;
 		try {
+			
+			
+			if(isBasic) {
+				lettersA = lettersAb;
+				lettersB = lettersBb;
+				lettersC = lettersCb;
+				typedOtp = typedOtp.toUpperCase();
+			}
+			
 			String partA = typedOtp.substring(0, 2);
 			String partB = typedOtp.substring(2, 4);
 			String partC = typedOtp.substring(4, 6);
@@ -161,10 +174,17 @@ public class Generator {
 		String stringOfCharA = String.valueOf(partA.charAt(a));
 		String stringOfCharB = String.valueOf(partB.charAt(b));
 		String stringOfCharC = String.valueOf(partC.charAt(c));
-
+		
+	
 		String lA = lettersA[Integer.parseInt(stringOfCharA)];
 		String lB = lettersB[Integer.parseInt(stringOfCharB)];
 		String lC = lettersC[Integer.parseInt(stringOfCharC)];
+		
+		if(isBasic) {
+			lA = lettersAb[Integer.parseInt(stringOfCharA)];
+			lB = lettersBb[Integer.parseInt(stringOfCharB)];
+			lC = lettersCb[Integer.parseInt(stringOfCharC)];
+		}
 
 		partA = partA.replaceAll(stringOfCharA, lA);
 		partB = partB.replaceAll(stringOfCharB, lB);
